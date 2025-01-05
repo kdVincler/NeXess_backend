@@ -29,7 +29,7 @@ DEBUG = True
 
 
 load_dotenv()
-ALLOWED_HOSTS = [os.getenv('IP_ADDRESS')]
+ALLOWED_HOSTS = [os.getenv('IP_ADDRESS'), "localhost", "127.0.0.1"]
 
 
 # Application definition
