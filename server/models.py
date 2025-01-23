@@ -5,11 +5,12 @@ from django.contrib.auth.models import User
 
 class Door(models.Model):
     """Class to represent entry points, aka doors in the system"""
+    descriptor = models.CharField(max_length=200, null=False, default="Door description")
     perm_level = models.IntegerField()
 
     def __str__(self):
         """Return the string representation of a door for readability in the admin site."""
-        return f"Door {self.id} (Permission level: {self.perm_level})"
+        return f"Door {self.id}, {self.descriptor} - Permission level: {self.perm_level}"
 
 
 
@@ -38,5 +39,6 @@ class Log(models.Model):
         return {
             'uid': self.user.id,
             'door_id': self.door.id,
+            'door_desc': self.door.descriptor,
             'accessed': self.date_time
         }
