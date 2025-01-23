@@ -32,3 +32,11 @@ class Log(models.Model):
     def __str__(self):
         """Return the string representation of a log entry for readability in the admin site."""
         return f"User {self.user.username} entered door {self.door.id} at datetime {self.date_time}"
+    
+    def as_dict(self):
+        """Return a dictionary representation of a log entry"""
+        return {
+            'uid': self.user.id,
+            'door_id': self.door.id,
+            'accessed': self.date_time
+        }
