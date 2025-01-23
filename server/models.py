@@ -6,7 +6,16 @@ from django.contrib.auth.models import User
 class Door(models.Model):
     """Class to represent entry points, aka doors in the system"""
     descriptor = models.CharField(max_length=200, null=False, default="Door description")
-    perm_level = models.IntegerField()
+    perm_level = models.IntegerField(
+        choices=[
+            (0, "Permission level 0"),
+            (1, "Permission level 1"),
+            (2, "Permission level 2"),
+            (3, "Permission level 3"),
+            (4, "Permission level 4"),
+            (5, "Permission level 5"),
+        ]
+    )
 
     def __str__(self):
         """Return the string representation of a door for readability in the admin site."""
@@ -17,7 +26,16 @@ class Door(models.Model):
 class Permission(models.Model):
     """Class to house user entry permissions represented by an integer"""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    perm_level = models.IntegerField()
+    perm_level = models.IntegerField(
+        choices=[
+            (0, "Permission level 0"),
+            (1, "Permission level 1"),
+            (2, "Permission level 2"),
+            (3, "Permission level 3"),
+            (4, "Permission level 4"),
+            (5, "Permission level 5"),
+        ]
+    )
 
     def __str__(self):
         """Return the string representation of a permission level for readability in the admin site."""
