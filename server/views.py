@@ -18,8 +18,6 @@ def check_auth_stat(request: HttpRequest) -> HttpResponse:
                 {
                     'authenticated': True, 
                     'user': {
-                        'id': request.user.id,
-                        'un': request.user.username,
                         'name': request.user.first_name + " " + request.user.last_name,
                         'perm': perm.first().perm_level if perm.exists() else 0,
                         'logs': [l.as_dict() for l in logs]

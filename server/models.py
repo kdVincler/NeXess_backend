@@ -58,5 +58,5 @@ class Log(models.Model):
             'uid': self.user.id,
             'door_id': self.door.id,
             'door_desc': self.door.descriptor,
-            'accessed': self.date_time
+            'accessed': self.date_time.strftime('%Y-%m-%d %H:%M')
         }
