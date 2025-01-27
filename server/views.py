@@ -12,6 +12,7 @@ def check_auth_stat(request: HttpRequest) -> HttpResponse:
     """Check the authentication status of requesting user. if authenticated, return user information"""
     if request.method == "GET":
         if request.user.is_authenticated:
+            print("Authenticated")
             perm = Permission.objects.filter(user=request.user)
             logs = Log.objects.filter(user=request.user)
             return JsonResponse(
@@ -25,6 +26,7 @@ def check_auth_stat(request: HttpRequest) -> HttpResponse:
                 }
             )
         else:
+            print("Not Authenticated")
             return JsonResponse(
                 {
                     'authenticated': False, 
@@ -41,6 +43,7 @@ def log_in(request: HttpRequest) -> HttpResponse:
         data = json.loads(request.body)
         u = authenticate(request=request, username=data['un'], password=data['pw'])
         if u:
+            print("logged in as", u)
             login(request=request, user=u)
             return JsonResponse({'message': "Successful login"}, status=200)
         else:
@@ -51,6 +54,7 @@ def log_in(request: HttpRequest) -> HttpResponse:
 
 def log_out(request: HttpRequest) -> HttpResponse:
     """Log the current user out"""
+    print("Logging out of", request.user)
     logout(request=request)
     return JsonResponse({'message': "Logged out"})
 
