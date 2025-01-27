@@ -19,11 +19,11 @@ def check_auth_stat(request: HttpRequest) -> HttpResponse:
                 {
                     'authenticated': True, 
                     'user': {
-                        'initials': request.user.first_name.title()[0] + request.user.last_name.title()[0]\
-                                    if  request.user.first_name != "" and request.user.last_name != ""\
+                        'initials': request.user.first_name.title()[:1] + request.user.last_name.title()[:1]\
+                                    if request.user.first_name or request.user.last_name \
                                     else "-",
-                        'name': request.user.first_name.title() + " " + request.user.last_name.title()\
-                                if  request.user.first_name != "" and request.user.last_name != ""\
+                        'name': f"{request.user.first_name.title()} {request.user.last_name.title()}".strip()\
+                                if request.user.first_name or request.user.last_name \
                                 else "-",
                         'perm': perm.first().get_perm_level_display() if perm.exists() else "Level 0 - Guest",
                         'logs': [l.as_dict() for l in logs.order_by('-date_time')]
