@@ -26,7 +26,7 @@ def check_auth_stat(request: HttpRequest) -> HttpResponse:
                                 if  request.user.first_name != "" and request.user.last_name != ""\
                                 else "-",
                         'perm': perm.first().get_perm_level_display() if perm.exists() else "Level 0 - Guest",
-                        'logs': [l.as_dict() for l in logs]
+                        'logs': [l.as_dict() for l in logs.order_by('-date_time')]
                     }
                 }
             )
