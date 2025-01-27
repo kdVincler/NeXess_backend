@@ -5,21 +5,21 @@ from django.contrib.auth.models import User
 
 class Door(models.Model):
     """Class to represent entry points, aka doors in the system"""
-    descriptor = models.CharField(max_length=200, null=False, default="Door description")
+    descriptor = models.CharField(max_length=200, unique=True, null=False, default="Door description")
     perm_level = models.IntegerField(
         choices=[
-            (0, "Permission level 0"),
-            (1, "Permission level 1"),
-            (2, "Permission level 2"),
-            (3, "Permission level 3"),
-            (4, "Permission level 4"),
-            (5, "Permission level 5"),
+            (0, "Level 0 - Guest"),
+            (1, "Level 1 - Employee"),
+            (2, "Level 2 - Specialist"),
+            (3, "Level 3 - Deputy Manager"),
+            (4, "Level 4 - Manager"),
+            (5, "Level 5 - Director"),
         ]
     )
 
     def __str__(self):
         """Return the string representation of a door for readability in the admin site."""
-        return f"Door {self.id}, {self.descriptor} - Permission level: {self.perm_level}"
+        return f"Door {self.id} - {self.descriptor}; {self.get_perm_level_display()}"
 
 
 
@@ -28,18 +28,18 @@ class Permission(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     perm_level = models.IntegerField(
         choices=[
-            (0, "Permission level 0"),
-            (1, "Permission level 1"),
-            (2, "Permission level 2"),
-            (3, "Permission level 3"),
-            (4, "Permission level 4"),
-            (5, "Permission level 5"),
+            (0, "Level 0 - Guest"),
+            (1, "Level 1 - Employee"),
+            (2, "Level 2 - Specialist"),
+            (3, "Level 3 - Deputy Manager"),
+            (4, "Level 4 - Manager"),
+            (5, "Level 5 - Director"),
         ]
     )
 
     def __str__(self):
         """Return the string representation of a permission level for readability in the admin site."""
-        return f"User {self.user.username} has permission level {self.perm_level}"
+        return f"User {self.user.username} has {self.get_perm_level_display()}"
 
 
 class Log(models.Model):
