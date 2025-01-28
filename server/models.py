@@ -35,7 +35,7 @@ class Permission(models.Model):
 
     def __str__(self):
         """Return the string representation of a permission level for readability in the admin site."""
-        return f"User {self.user.username} has {self.get_perm_level_display()}"
+        return f"User {self.user.username} has {self.get_perm_level_display()} level permission"
 
 
 class Log(models.Model):
@@ -47,7 +47,7 @@ class Log(models.Model):
 
     def __str__(self):
         """Return the string representation of a log entry for readability in the admin site."""
-        return f"User {self.user.username} entered door {self.door.id} at datetime {self.date_time}"
+        return f"User {self.user.username} {'entered' if self.perm_granted else 'tried to enter'} door {self.door.id} at datetime {self.date_time}"
     
     def as_dict(self):
         """Return a dictionary representation of a log entry"""

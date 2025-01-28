@@ -76,7 +76,10 @@ def open_door(request: HttpRequest) -> HttpResponse:
             except Door.DoesNotExist:
                 print("Door does not exist")
                 return JsonResponse({'error': "Door could not be identified"}, status=400)
-            if (received_door.perm_level <= Permission.objects.filter(user=request.user).first().perm_level):
+            
+            if (Permission.objects.filter(user=request.user).exists()
+                and 
+                received_door.perm_level <= Permission.objects.filter(user=request.user).first().perm_level):
                 # User has permission to access the door, make log entry and return
                 Log.objects.create(
                     user=request.user,
