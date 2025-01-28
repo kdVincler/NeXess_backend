@@ -36,8 +36,8 @@ class PermissionAdmin(admin.ModelAdmin):
 class LogAdmin(admin.ModelAdmin):
     """Class representation of the Log model in the admin interface"""
     search_fields = ('user__username', 'door__descriptor', 'user__first_name', 'user__last_name',)
-    list_display = ('full_name', 'user', 'door', 'date_time')
-    list_filter = ('user', 'door__id', 'date_time',)
+    list_display = ('full_name', 'user', 'door', 'date_time', 'perm_granted',)
+    list_filter = ('user', 'door__id', 'date_time', 'perm_granted',)
     list_per_page = 25
     ordering= ('-date_time',)
     date_hierarchy = 'date_time'
