@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from .models import Door, Permission, Log
 
 # Register your models here.
@@ -14,6 +14,7 @@ class DoorAdmin(admin.ModelAdmin):
     list_display = ('id', 'descriptor', 'perm_level')
     list_filter = ('perm_level',)
     list_per_page = 25
+    ordering= ('perm_level',)
 
 
 @admin.register(Permission)
@@ -38,6 +39,7 @@ class LogAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'user', 'door', 'date_time')
     list_filter = ('user', 'door__id', 'date_time',)
     list_per_page = 25
+    ordering= ('-date_time',)
     date_hierarchy = 'date_time'
 
     @admin.display(description="Name",)
@@ -47,7 +49,9 @@ class LogAdmin(admin.ModelAdmin):
 
 
 class CustomUserAdmin(UserAdmin):
-    """Custom user admin to edit what fields show up on account creation"""
+    """Custom user admin to edit what fields show up on account creation and to edit what and how is displayed"""
+    list_display = ('username', 'last_name', 'first_name', 'is_staff',)
+    ordering= ('last_name', 'first_name', 'username',)
     # https://stackoverflow.com/questions/50436596/what-is-add-fieldsets-for-in-useradmin-in-django
     add_fieldsets = (
         (None, {
@@ -59,3 +63,5 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
+
+admin.site.unregister(Group)

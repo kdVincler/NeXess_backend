@@ -1,9 +1,10 @@
-import json
+import json, datetime as Dt
 from django.contrib.auth.models import User
 from .models import Door, Permission, Log
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.utils.timezone import make_aware
 
 # Create your views here.
 
@@ -66,13 +67,36 @@ def log_out(request: HttpRequest) -> HttpResponse:
 
 def open_door(request: HttpRequest) -> HttpResponse:
     """Authenticate a door entry"""
-    # needs authentication, POST
     if request.method == "POST":
         if request.user.is_authenticated:
-            # TODO: implement
-            pass
+            data = json.loads(request.body)
+            received_door = None
+            try:
+                received_door = Door.objects.get(id=data['id'])
+            except Door.DoesNotExist:
+                print("Door does not exist")
+                return JsonResponse({'error': "Door could not be identified"}, status=400)
+            if (received_door.perm_level <= Permission.objects.filter(user=request.user).first().perm_level):
+                # User has permission to access the door, make log entry and return
+                Log.objects.create(
+                    user=request.user,
+                    door=received_door,
+                    date_time=make_aware(Dt.datetime.now())
+                )
+                print(request.user, "opened:", received_door)
+                return JsonResponse({'message': "Permission granted, Door unlocked"}, status=200)
+            else:
+                # User doesn't have permission to access the door, make log entry and return error
+                Log.objects.create(
+                    user=request.user,
+                    door=received_door,
+                    date_time=make_aware(Dt.datetime.now()),
+                    perm_granted=False
+                )
+                print(request.user, "tried to open:", received_door)
+                return JsonResponse({'error': "User does not have necessary permission."}, status=403)
         else:
-            JsonResponse({'error': "Must be logged in"}, status=401)
+            return JsonResponse({'error': "User must be logged in"}, status=401)
     else:
         return JsonResponse({'error': "Not implemented yet"}, status=501)
 
