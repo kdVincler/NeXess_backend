@@ -51,7 +51,7 @@ To run & test this project on your own machine, follow the steps below. After se
    IP_ADDRESS="YOUR_IP_ADDRESS_HERE"
    ```
 
-6. If everything goes smoothly, you should be able to start the Django development server from the root directory and broadcast it on the local network:
+6. If everything goes smoothly, you should be able to start the Django development server from the root directory and broadcast it on the local network. (The '0.0.0.0:8000' command is needed to make the server reachable on the local network.)
 
    ```console
    $ python manage.py runserver 0.0.0.0:8000
@@ -73,7 +73,7 @@ The admin page, where the created superuser can manipulate the data of the proje
 - http://localhost:8000/admin/
 - http://127.0.0.1:8000/admin/
 
-You can use the standard keyboard interrupt (Ctrl + C) to stop the server at any time. Closing the terminal window where runserver was called will also stop the server. The '0.0.0.0:8000' command is needed to make the server reachable on the local network.
+You can use the standard keyboard interrupt (Ctrl + C) to stop the server at any time. Closing the terminal window where runserver was called will also stop the server.
 
 ### A note on the `IP_ADDRESS` environmental variable.
 
