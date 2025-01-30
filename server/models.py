@@ -28,7 +28,7 @@ class Door(models.Model):
 
 class Permission(models.Model):
     """Class to house user entry permissions represented by an integer"""
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     perm_level = models.IntegerField(
         choices=perm_choices
     )
