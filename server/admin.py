@@ -59,6 +59,12 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('username', 'password1', 'password2', 'first_name', 'last_name',  'is_staff', 'is_superuser')}
         ),
     )
+    # https://docs.djangoproject.com/en/5.1/ref/contrib/admin/#modeladmin-methods
+    def save_model(self, request, obj, form, change):
+        """Function to automatically create a Permission instance linked to the created user"""
+        super().save_model(request, obj, form, change)
+        new_user = User.objects.get(id=obj.id)
+        Permission.objects.create(user=new_user, perm_level=0)
 
 
 admin.site.unregister(User)

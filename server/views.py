@@ -26,7 +26,7 @@ def check_auth_stat(request: HttpRequest) -> HttpResponse:
                         'name': f"{request.user.first_name.title()} {request.user.last_name.title()}".strip()\
                                 if request.user.first_name or request.user.last_name \
                                 else "-",
-                        'perm': perm.first().get_perm_level_display() if perm.exists() else "Level 0 - Guest",
+                        'perm': perm.first().get_perm_level_display(),
                         'logs': [l.as_dict() for l in logs.order_by('-date_time')]
                     }
                 }
@@ -77,9 +77,7 @@ def open_door(request: HttpRequest) -> HttpResponse:
                 print("Door does not exist")
                 return JsonResponse({'error': "Door could not be identified"}, status=400)
             
-            if (Permission.objects.filter(user=request.user).exists()
-                and 
-                received_door.perm_level <= Permission.objects.filter(user=request.user).first().perm_level):
+            if (received_door.perm_level <= Permission.objects.filter(user=request.user).first().perm_level):
                 # User has permission to access the door, make log entry and return
                 Log.objects.create(
                     user=request.user,
