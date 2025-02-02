@@ -61,7 +61,7 @@ Your server now should be reachable on 3 different URLs.
 
 - http://localhost:8000/
 - http://127.0.0.1:8000/
-- http://`IP_ADDRESS`:8000/ (where `IP_ADDRESS` is declared in `.env` - **only reachable for other devices on the network**)
+- http://`IP_ADDRESS`:8000/ (where `IP_ADDRESS` is declared in `.env`) - **only reachable for other devices on the network**)
 
 If you would like to test if the server is running correctly, go to either of the following URLs and you should see a "Server reached (200 - OK)" message in your browser:
 
